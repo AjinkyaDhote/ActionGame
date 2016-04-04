@@ -20,7 +20,7 @@ public class PlayerShooting : MonoBehaviour {
 		for (int i = 0; i < maxImpacts; i++) 
 		{
 		
-			impacts [i] = (GameObject)Instantiate (impactPrefab);
+			impacts [i] = Instantiate (impactPrefab);
 		}
 
 

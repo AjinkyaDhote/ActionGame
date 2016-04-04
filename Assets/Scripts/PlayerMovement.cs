@@ -111,7 +111,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Start()
 	{
-		//Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
 		wayPointNumber = 0;
 		rigidBody = GetComponent<Rigidbody>();
 		wayPoints3D = new Vector3[wayPoints2D.Length];
