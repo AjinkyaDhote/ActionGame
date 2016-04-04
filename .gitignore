@@ -27,3 +27,4 @@ sysinfo.txt
 
 # Custom folder to ignore.
 /Assets/Scenes/Library/*
+/Assets/Scenes/Temp/*
