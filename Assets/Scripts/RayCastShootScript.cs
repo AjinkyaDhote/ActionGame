@@ -42,7 +42,7 @@ public class RayCastShootScript : MonoBehaviour
             Vector3 rayOrigin = myCam.ViewportToWorldPoint(GunCrosshair.transform.position);
             if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
             {
-                anim.SetTrigger("Shooting");
+                anim.SetTrigger("Fire");
                 source.PlayOneShot(aclip, 1);
                 Debug.Log("Fire Button Clicked");
                 nextFire = Time.time + fireRate; //check what is fireRate
