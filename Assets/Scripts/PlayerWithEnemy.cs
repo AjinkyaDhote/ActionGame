@@ -7,7 +7,7 @@ public class PlayerWithEnemy : MonoBehaviour {
     Image HealthBar;
     Image EnergyBar;
     Text bulletText;
-    int bulletCount = 0;
+    public int bulletCount = 0;
     private BoxCollider col;
     float fillHealth = 1.0f;
     float fillEnergy = 1.0f;
@@ -20,6 +20,7 @@ public class PlayerWithEnemy : MonoBehaviour {
         bulletText = transform.FindChild("Main Camera").transform.FindChild("Canvas").FindChild("bullets").GetComponent<Text>();
         bulletsString = "Bullets :" + bulletCount;
         bulletText.text = bulletsString;
+        bulletText.color = Color.red;
     }
     int i = 0;
 
@@ -37,8 +38,27 @@ public class PlayerWithEnemy : MonoBehaviour {
             fillEnergy -= (float)(Time.deltaTime * 0.2);
             EnergyBar.fillAmount = fillEnergy;
         }
-	
-	}
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (bulletCount > 0)
+            {
+                Debug.Log("Pressed left click.");
+                bulletCount -= 1;
+                bulletsString = "Bullets :" + bulletCount;
+                bulletText.text = bulletsString;
+                if (bulletCount == 0)
+                {
+                    bulletText.color = Color.red;
+                }
+            }
+            else
+            {
+                bulletText.color = Color.red;
+            }
+        }
+
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -62,8 +82,11 @@ public class PlayerWithEnemy : MonoBehaviour {
             bulletCount += 10;
             bulletsString = "Bullets :" + bulletCount;
             bulletText.text = bulletsString;
+            bulletText.color = Color.black;
+
 
         }
+      
 
     }
 }
