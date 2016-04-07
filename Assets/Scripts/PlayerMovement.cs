@@ -71,13 +71,13 @@ public class PlayerMovement : MonoBehaviour
 
             if (m_cursorIsLocked)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+				Cursor.lockState = CursorLockMode.Locked; 
+				Cursor.visible = false;
             }
             else if (!m_cursorIsLocked)
             {
                 Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+				Cursor.visible = true;
             }
         }
 
@@ -102,27 +102,24 @@ public class PlayerMovement : MonoBehaviour
     public Camera mainCamera;
     [Range(1, 10)]
     public int playerSpeed;
-    bool isWASDmovementEnabled;
     Vector3[] wayPoints3D;
     Rigidbody rigidBody;
     int wayPointNumber;
     public MouseLook mouseLook;
-
+	wasdMovement WASDmovement;
 
     void Start()
     {
-        //Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+		WASDmovement = GetComponent<wasdMovement> ();
         wayPointNumber = 0;
         rigidBody = GetComponent<Rigidbody>();
-        isWASDmovementEnabled = GetComponent<wasdMovement>().enabled;
-        if(!isWASDmovementEnabled)
-        {
-            wayPoints3D = new Vector3[wayPoints2D.Length];
-            for (int i = 0; i < wayPoints3D.Length; i++)
-            {
-                wayPoints3D[i] = ConvertWayPointTo3D(wayPoints2D[i]);
-            }
-        }   
+		if (!WASDmovement.enabled) {
+			wayPoints3D = new Vector3[wayPoints2D.Length];
+			for (int i = 0; i < wayPoints3D.Length; i++)
+			{
+				wayPoints3D[i] = ConvertWayPointTo3D(wayPoints2D[i]);
+			}
+		}  
         mouseLook = new MouseLook();
     }
 
@@ -138,23 +135,22 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(!isWASDmovementEnabled)
-        {
-            if (Vector3.Distance(transform.position, wayPoints3D[wayPointNumber]) < 0.5f)
-            {
-                if (wayPointNumber < (wayPoints3D.Length - 1))
-                {
-                    wayPointNumber++;
-                }
-                else
-                {
-                    wayPointNumber = 0;
-                }
-            }
-            else
-            {
-                rigidBody.MovePosition(transform.position + (wayPoints3D[wayPointNumber] - transform.position).normalized * playerSpeed * Time.deltaTime);
-            }
-        }     
+		if (!WASDmovement.enabled) {
+			if (Vector3.Distance(transform.position, wayPoints3D[wayPointNumber]) < 0.5f)
+			{
+				if (wayPointNumber < (wayPoints3D.Length - 1))
+				{
+					wayPointNumber++;
+				}
+				else
+				{
+					wayPointNumber = 0;
+				}
+			}
+			else
+			{
+				rigidBody.MovePosition(transform.position + (wayPoints3D[wayPointNumber] - transform.position).normalized * playerSpeed * Time.deltaTime);
+			}
+		}      
     }
 }
