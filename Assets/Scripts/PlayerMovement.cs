@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
         [Range(1.0f, 10.0f)]
         public float smoothTime = 5.0f;
         public bool lockCursor = true;
-        Texture2D crossHair;
 
         Quaternion m_CharacterTargetRot;
         Quaternion m_CameraTargetRot;
@@ -28,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
         {
             float yRot = Input.GetAxis("Mouse X") * XSensitivity;
             float xRot = Input.GetAxis("Mouse Y") * YSensitivity;
-            crossHair = Resources.Load("Crosshair") as Texture2D;
 
             m_CharacterTargetRot = character.localRotation;
             m_CameraTargetRot = camera.localRotation;
@@ -73,13 +71,13 @@ public class PlayerMovement : MonoBehaviour
 
             if (m_cursorIsLocked)
             {
-                Cursor.lockState = CursorLockMode.Confined;
-                Cursor.SetCursor(crossHair, Vector2.zero, CursorMode.Auto);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else if (!m_cursorIsLocked)
             {
                 Cursor.lockState = CursorLockMode.None;
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                Cursor.visible = true;
             }
         }
 
@@ -104,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
     public Camera mainCamera;
     [Range(1, 10)]
     public int playerSpeed;
+    bool isWASDmovementEnabled;
     Vector3[] wayPoints3D;
     Rigidbody rigidBody;
     int wayPointNumber;
@@ -115,11 +114,15 @@ public class PlayerMovement : MonoBehaviour
         //Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         wayPointNumber = 0;
         rigidBody = GetComponent<Rigidbody>();
-        wayPoints3D = new Vector3[wayPoints2D.Length];
-        for (int i = 0; i < wayPoints3D.Length; i++)
+        isWASDmovementEnabled = GetComponent<wasdMovement>().enabled;
+        if(!isWASDmovementEnabled)
         {
-            wayPoints3D[i] = ConvertWayPointTo3D(wayPoints2D[i]);
-        }
+            wayPoints3D = new Vector3[wayPoints2D.Length];
+            for (int i = 0; i < wayPoints3D.Length; i++)
+            {
+                wayPoints3D[i] = ConvertWayPointTo3D(wayPoints2D[i]);
+            }
+        }   
         mouseLook = new MouseLook();
     }
 
@@ -135,20 +138,23 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Vector3.Distance(transform.position, wayPoints3D[wayPointNumber]) < 0.5f)
+        if(!isWASDmovementEnabled)
         {
-            if (wayPointNumber < (wayPoints3D.Length - 1))
+            if (Vector3.Distance(transform.position, wayPoints3D[wayPointNumber]) < 0.5f)
             {
-                wayPointNumber++;
+                if (wayPointNumber < (wayPoints3D.Length - 1))
+                {
+                    wayPointNumber++;
+                }
+                else
+                {
+                    wayPointNumber = 0;
+                }
             }
             else
             {
-                wayPointNumber = 0;
+                rigidBody.MovePosition(transform.position + (wayPoints3D[wayPointNumber] - transform.position).normalized * playerSpeed * Time.deltaTime);
             }
-        }
-        else
-        {
-            rigidBody.MovePosition(transform.position + (wayPoints3D[wayPointNumber] - transform.position).normalized * playerSpeed * Time.deltaTime);
-        }
+        }     
     }
 }

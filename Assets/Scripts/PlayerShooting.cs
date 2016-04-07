@@ -12,7 +12,7 @@ public class PlayerShooting : MonoBehaviour {
 	GameObject[] impacts;
 	int currentImpact = 0;
 	int maxImpacts = 5;
-    PlayerWithEnemy pScript;
+    public PlayerWithEnemy pScript;
 
 	// Use this for initialization
 	void Start () {
@@ -23,15 +23,15 @@ public class PlayerShooting : MonoBehaviour {
 		
 			impacts [i] = Instantiate (impactPrefab);
 		}
-        pScript = transform.parent.parent.GetComponent<PlayerWithEnemy>();
+        //pScript = transform.parent.parent.GetComponent<PlayerWithEnemy>();
+        
 		anim = GetComponentInChildren<Animator> ();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		if (Input.GetButtonDown ("Fire1")) 
+        if (Input.GetButtonDown ("Fire1")) 
 		{
 			muzzleFlash.Play ();
 			anim.SetTrigger ("Fire");
