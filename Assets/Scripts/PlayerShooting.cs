@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerShooting : MonoBehaviour {
 
@@ -7,11 +8,11 @@ public class PlayerShooting : MonoBehaviour {
 	public Animator anim;
 	bool shooting = false;
 	public GameObject impactPrefab; //Bullet Particle Impact
-
-
+    private int bulletCount = 0;
 	GameObject[] impacts;
 	int currentImpact = 0;
 	int maxImpacts = 5;
+    PlayerWithEnemy pScript;
 
 	// Use this for initialization
 	void Start () {
@@ -22,8 +23,7 @@ public class PlayerShooting : MonoBehaviour {
 		
 			impacts [i] = Instantiate (impactPrefab);
 		}
-
-
+        pScript = transform.parent.parent.GetComponent<PlayerWithEnemy>();
 		anim = GetComponentInChildren<Animator> ();
 
 	}
@@ -37,13 +37,14 @@ public class PlayerShooting : MonoBehaviour {
 			anim.SetTrigger ("Fire");
 			shooting = true;
 		}
+        bulletCount = pScript.bulletCount;
 			
 	}
 
 
 	void FixedUpdate()
 	{
-		if (shooting) 
+		if (shooting && bulletCount >0) 
 		{
 			shooting = false;
 			RaycastHit hit;
