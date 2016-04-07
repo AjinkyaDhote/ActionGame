@@ -15,9 +15,9 @@ public class PlayerWithEnemy : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-        HealthBar = transform.FindChild("Main Camera").transform.FindChild("Canvas").FindChild("healthBar").GetComponent<Image>();
-        EnergyBar = transform.FindChild("Main Camera").transform.FindChild("Canvas").FindChild("energyBar").GetComponent<Image>();
-        bulletText = transform.FindChild("Main Camera").transform.FindChild("Canvas").FindChild("bullets").GetComponent<Text>();
+        HealthBar = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("healthBar").GetComponent<Image>();
+        EnergyBar = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("energyBar").GetComponent<Image>();
+        bulletText = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("bullets").GetComponent<Text>();
         bulletsString = "Bullets :" + bulletCount;
         bulletText.text = bulletsString;
         bulletText.color = Color.red;
