@@ -4,25 +4,33 @@ using UnityEngine.UI;
 
 public class PlayerWithEnemy : MonoBehaviour {
 
-    Image HealthBar;
-    Image EnergyBar;
-    Text bulletText;
-    public int bulletCount = 0;
+    Text HealthText;
+    Text AmmoText;
+    Text BatteryText;
+    public int bulletCount  = 0;
+    private int healthCount  = 100;
+    private int batteryCount = 100;
     private BoxCollider col;
-    float fillHealth = 1.0f;
-    float fillEnergy = 1.0f;
     string bulletsString;
-    
+    string batteryString;
+    string healthString;
+
     // Use this for initialization
     void Start () {
-        HealthBar = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("healthBar").GetComponent<Image>();
-		EnergyBar = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("energyBar").GetComponent<Image>();
-		bulletText = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("bullets").GetComponent<Text>();
-        bulletsString = "Bullets :" + bulletCount;
-        bulletText.text = bulletsString;
-        bulletText.color = Color.red;
+        /*HealthBar = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("healthBar").GetComponent<Image>();
+		EnergyBar = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("energyBar").GetComponent<Image>();*/
+		AmmoText    = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("AmmoText").GetComponent<Text>();
+        HealthText  = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("HealthText").GetComponent<Text>();
+        BatteryText = transform.FindChild("Main Camera").transform.FindChild("FPS UI Canvas").FindChild("BatteryText").GetComponent<Text>();
+        bulletsString = " " + bulletCount;
+        healthString  = " " + healthCount;
+        batteryString = " " + batteryCount;
+        AmmoText.text = bulletsString;
+        AmmoText.color = Color.red;
+        HealthText.text = healthString;
+        BatteryText.text = batteryString;
     }
-    int i = 0;
+    int counterForBatteryDrain = 0;
 
     void Awake()
     {
@@ -32,12 +40,8 @@ public class PlayerWithEnemy : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        i++;
-        if (i % 10 == 0)
-        {
-            fillEnergy -= (float)(Time.deltaTime * 0.2);
-            EnergyBar.fillAmount = fillEnergy;
-        }
+
+        counterForBatteryDrain++;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -45,16 +49,16 @@ public class PlayerWithEnemy : MonoBehaviour {
             {
                 Debug.Log("Pressed left click.");
                 bulletCount -= 1;
-                bulletsString = "Bullets :" + bulletCount;
-                bulletText.text = bulletsString;
+                bulletsString = " " + bulletCount;
+                AmmoText.text = bulletsString;
                 if (bulletCount == 0)
                 {
-                    bulletText.color = Color.red;
+                    AmmoText.color = Color.red;
                 }
             }
             else
             {
-                bulletText.color = Color.red;
+                AmmoText.color = Color.red;
             }
         }
 
@@ -64,25 +68,33 @@ public class PlayerWithEnemy : MonoBehaviour {
     {
         if (other.name == "enemy")
         {
-            fillHealth -= 0.1f;
-            HealthBar.fillAmount = fillHealth;
+            healthCount -= 10;
+            healthString = "" + healthCount;
+            HealthText.text = healthString;
 
+            if (healthCount <= 30)
+                HealthText.color = Color.red;
+            
         }
 
 
-        else if (other.name == "bat")
+        else if (other.tag == "Battery")
         {
-            fillEnergy = 1f;
-            EnergyBar.fillAmount = fillEnergy;
+
+            batteryCount += 10;
+            batteryString = "" + batteryCount;
+            BatteryText.text = batteryString;
+            Destroy(other.gameObject);
+            
 
         }
 
         else if (other.name == "bullets")
         {
             bulletCount += 10;
-            bulletsString = "Bullets :" + bulletCount;
-            bulletText.text = bulletsString;
-            bulletText.color = Color.black;
+            bulletsString = " " + bulletCount;
+            AmmoText.text = bulletsString;
+            AmmoText.color = Color.black;
 
 
         }
