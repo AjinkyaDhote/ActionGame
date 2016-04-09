@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
+<<<<<<< HEAD
+  - Battery
+=======
   - Gun
+>>>>>>> f861a8c6a5a46c71de76b96cdde0813fa7c7275a
   layers:
   - Default
   - TransparentFX

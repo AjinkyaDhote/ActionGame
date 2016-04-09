@@ -12,7 +12,7 @@ public class PlayerShooting : MonoBehaviour {
 
 	GameObject muzzleFlashInstance;
 	bool shooting = false;
-    private int bulletCount = 0;
+    public int bulletCount = 0;
 	GameObject[] impacts;
 	int currentImpact = 0;
 	int maxImpacts = 5;
